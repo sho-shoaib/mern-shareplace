@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import Homepage from "./components/pages/Homepage";
 import Userspage from "./components/pages/Userspage";
 import Profilepage from "./components/pages/Profilepage";
+import Postpage from "./components/pages/Postpage";
 
 var xsBreak = null;
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/' element={<Homepage />} />
           <Route path='/users' element={<Userspage />} />
           <Route path='/profile' element={<Profilepage />} />
+          <Route path='/posts/:id' element={<Postpage />} />
         </Routes>
       </BrowserRouter>
     </>
