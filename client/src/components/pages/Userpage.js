@@ -1,13 +1,7 @@
-import {
-  Container,
-  Typography,
-  Avatar,
-  Menu,
-  MenuItem,
-  Button,
-} from "@mui/material";
+import { Container, Typography, Avatar } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { users } from "../../data/data";
 import { posts } from "../../data/data";
 import { useTheme } from "@mui/material/styles";
@@ -17,40 +11,46 @@ import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Userpage = () => {
   const navigate = useNavigate();
-  const id = 0;
+  const { id } = useParams();
   const user = users[id];
   const theme = useTheme();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleOpenMenu = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEdit = () => {};
-
-  const handleDelete = () => {};
-
   return (
     <Container maxWidth='md' sx={{ pt: 5, pb: 5 }}>
+      <Box
+        onClick={() => navigate(-1)}
+        sx={{
+          display: "flex",
+          maxWidth: "fit-content",
+          alignItems: "center",
+          gap: 0.9,
+          mb: 4,
+          "&:hover": { backgroundColor: "#EDEFEF" },
+          paddingInline: 1,
+          paddingRight: 2,
+          borderRadius: 2,
+          transition: "all 0.3s",
+          cursor: "pointer",
+        }}
+      >
+        <ArrowBackIcon />
+        <Typography variant='h6' sx={{ fontSize: 25 }}>
+          Back
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           flexDirection: { xs: "column", md: "row" },
-          mb: 2,
+          mb: 5,
         }}
       >
         <Box
@@ -126,16 +126,6 @@ const Userpage = () => {
         />
       </Box>
 
-      <Button
-        onClick={() => navigate("/create")}
-        variant='contained'
-        color='success'
-        endIcon={<AddIcon />}
-        sx={{ mb: 4 }}
-      >
-        create
-      </Button>
-
       <Box
         sx={{
           backgroundColor: { xs: "#EDEFEF", sm: "#f7f9f9" },
@@ -163,55 +153,19 @@ const Userpage = () => {
 
             return (
               <Card key={post.id} sx={{ maxWidth: "100%", mb: 4 }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-                      R
-                    </Avatar>
-                  }
-                  action={
-                    <div>
-                      <IconButton
-                        aria-controls='menu'
-                        aria-label='settings'
-                        sx={{ zIndex: "1" }}
-                        onClick={(e) => handleOpenMenu(e)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
-
-                      <Menu
-                        id='menu'
-                        onClose={handleMenuClose}
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                      >
-                        <MenuItem
-                          onClick={() => {
-                            handleMenuClose();
-                            handleEdit();
-                          }}
-                        >
-                          Edit
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            handleMenuClose();
-                            handleDelete();
-                          }}
-                        >
-                          Delete
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  }
-                  title={post.title}
-                  subheader={post.date}
-                />
                 <Box
                   sx={{ cursor: "pointer" }}
                   onClick={() => navigate(`/posts/${post.id}`)}
                 >
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
+                        R
+                      </Avatar>
+                    }
+                    title={post.title}
+                    subheader={post.date}
+                  />
                   <CardMedia
                     component='img'
                     height='194'

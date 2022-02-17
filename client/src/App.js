@@ -6,6 +6,8 @@ import Homepage from "./components/pages/Homepage";
 import Userspage from "./components/pages/Userspage";
 import Profilepage from "./components/pages/Profilepage";
 import Postpage from "./components/pages/Postpage";
+import Userpage from "./components/pages/Userpage";
+import Createpage from "./components/pages/Createpage";
 
 var xsBreak = null;
 
@@ -22,6 +24,8 @@ function App() {
           <Route path='/users' element={<Userspage />} />
           <Route path='/profile' element={<Profilepage />} />
           <Route path='/posts/:id' element={<Postpage />} />
+          <Route path='/users/:id' element={<Userpage />} />
+          <Route path='/create' element={<Createpage />} />
         </Routes>
       </BrowserRouter>
     </>

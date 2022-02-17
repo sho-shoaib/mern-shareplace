@@ -1,27 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { posts } from "../../data/data";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const PerBlog = () => {
   const theme = useTheme();
   const { id } = useParams();
   const blog = posts[id];
+  const navigate = useNavigate();
 
   return (
     <>
       <Container
         maxWidth='md'
         sx={{
-          pt: theme.spacing(5),
+          pt: theme.spacing(0),
           pb: theme.spacing(5),
           mt: theme.spacing(5),
           mb: theme.spacing(10),
           borderRadius: 5,
         }}
       >
+        <Box
+          onClick={() => navigate(-1)}
+          sx={{
+            display: "flex",
+            maxWidth: "fit-content",
+            alignItems: "center",
+            gap: 0.9,
+            mb: 5,
+            "&:hover": { backgroundColor: "#EDEFEF" },
+            paddingInline: 1,
+            paddingRight: 2,
+            borderRadius: 2,
+            transition: "all 0.3s",
+            cursor: "pointer",
+          }}
+        >
+          <ArrowBackIcon />
+          <Typography variant='h6' sx={{ fontSize: 25 }}>
+            Back
+          </Typography>
+        </Box>
         <Box
           sx={{
             maxWidth: "100%",
@@ -36,19 +59,36 @@ const PerBlog = () => {
               alignItems: "center",
             }}
           >
-            <Typography
-              variant='caption'
-              sx={{
-                textTransform: "uppercase",
-                color: "var(--grey)",
-                fontWeight: "700",
-                fontSize: { sm: 12.5, xs: 11.5 },
-                display: "block",
-                mb: theme.spacing(1),
-              }}
-            >
-              {blog.date} // {blog.creator}
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography
+                variant='caption'
+                sx={{
+                  textTransform: "uppercase",
+                  color: "var(--grey)",
+                  fontWeight: "700",
+                  fontSize: { sm: 12.5, xs: 11.5 },
+                  display: "block",
+                  mb: theme.spacing(1),
+                }}
+              >
+                {blog.date} //
+              </Typography>
+              <Typography
+                onClick={() => navigate(`/users/${blog.creatorId}`)}
+                sx={{
+                  textTransform: "uppercase",
+                  color: "var(--grey)",
+                  fontWeight: "700",
+                  fontSize: { sm: 12.5, xs: 11.5 },
+                  display: "block",
+                  mb: theme.spacing(1),
+                  cursor: "pointer",
+                  "&:hover": { textDecoration: "underline" },
+                }}
+              >
+                {blog.creator}
+              </Typography>
+            </Box>
             <Typography
               variant='caption'
               sx={{
@@ -94,9 +134,13 @@ const PerBlog = () => {
             overflow: "hidden",
           }}
         >
-          <Typography variant='h6' sx={{ mb: theme.spacing(5) }}>
+          <Typography variant='h6' sx={{ mb: theme.spacing(3) }}>
             {blog.caption}
           </Typography>
+
+          <Button size='large' variant='text' onClick={() => navigate("/")}>
+            more posts
+          </Button>
         </Box>
       </Container>
     </>

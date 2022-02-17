@@ -66,6 +66,7 @@ export const posts = [
     likes: 0,
     creator: "lizzy",
     date: "26 september 2018",
+    creatorId: 0,
   },
   {
     id: 1,
@@ -77,6 +78,7 @@ export const posts = [
     likes: 0,
     creator: "lizzy",
     date: "26 september 2018",
+    creatorId: 0,
   },
   {
     id: 2,
@@ -88,6 +90,7 @@ export const posts = [
     likes: 0,
     creator: "lizzy",
     date: "26 september 2018",
+    creatorId: 0,
   },
   {
     id: 3,
@@ -99,6 +102,7 @@ export const posts = [
     likes: 0,
     creator: "lizzy",
     date: "26 september 2018",
+    creatorId: 0,
   },
   {
     id: 4,
@@ -110,5 +114,6 @@ export const posts = [
     likes: 0,
     creator: "lizzy",
     date: "26 september 2018",
+    creatorId: 0,
   },
 ];

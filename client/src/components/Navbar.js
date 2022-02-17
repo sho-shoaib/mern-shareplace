@@ -11,13 +11,12 @@ import { Box } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
 const pages = ["Home", "People", "Profile"];
 
 const Navbar = () => {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -41,7 +40,13 @@ const Navbar = () => {
     <>
       <AppBar position='static'>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant='h5'>SharePlace</Typography>
+          <Typography
+            sx={{ cursor: "pointer" }}
+            variant='h5'
+            onClick={() => navigate("/")}
+          >
+            SharePlace
+          </Typography>
           <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 3 }}>
             <ThemeProvider theme={theme}>
               <Button variant='text' onClick={() => navigate("/")}>

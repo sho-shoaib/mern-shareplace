@@ -21,10 +21,9 @@ import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 
-const postsType = ["Recent posts", "Most Liked posts", "Your posts"];
+const postsType = ["Recent posts", "Most Liked posts", "My posts"];
 
 const Homepage = () => {
   const [toShow, setToShow] = useState("Recent posts");
@@ -192,11 +191,6 @@ const Homepage = () => {
                           R
                         </Avatar>
                       }
-                      action={
-                        <IconButton aria-label='settings'>
-                          <MoreVertIcon />
-                        </IconButton>
-                      }
                       title={post.title}
                       subheader={post.date}
                     />
@@ -258,7 +252,12 @@ const Homepage = () => {
               },
             }}
           >
-            <Button variant='contained' color='success' endIcon={<AddIcon />}>
+            <Button
+              onClick={() => navigate("/create")}
+              variant='contained'
+              color='success'
+              endIcon={<AddIcon />}
+            >
               create
             </Button>
           </Box>

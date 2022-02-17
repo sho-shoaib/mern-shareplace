@@ -6,8 +6,11 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { users } from "../../data/data";
 import { CardActionArea } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Userspage = () => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -45,7 +48,10 @@ const Userspage = () => {
               },
             }}
           >
-            <CardActionArea disableRipple>
+            <CardActionArea
+              disableRipple
+              onClick={() => navigate(`/users/${user.id}`)}
+            >
               <CardMedia
                 component='img'
                 height='140'
