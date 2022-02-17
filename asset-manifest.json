@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mern-shareplace/static/css/main.8753134d.css",
+    "main.js": "/mern-shareplace/static/js/main.62515500.js",
+    "index.html": "/mern-shareplace/index.html",
+    "main.8753134d.css.map": "/mern-shareplace/static/css/main.8753134d.css.map",
+    "main.62515500.js.map": "/mern-shareplace/static/js/main.62515500.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8753134d.css",
+    "static/js/main.62515500.js"
+  ]
+}
