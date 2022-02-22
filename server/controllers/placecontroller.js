@@ -2,8 +2,13 @@ import AppError from "../utils/apperror.js";
 //return next(new AppError("message", statusCode)); to send error
 import { catchAsync } from "../utils/catchasync.js";
 import { posts as places } from "../data/data.js";
+import { Place } from "../model/placemodel.js";
 
 export const getAllPlaces = catchAsync(async (req, res, next) => {
+  let placesQuery = Place.find();
+
+  const places = await placesQuery;
+
   res.status(200).json({
     status: "success",
     length: places.length,
@@ -12,14 +17,9 @@ export const getAllPlaces = catchAsync(async (req, res, next) => {
 });
 
 export const getPlaceById = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const placeFound = places.find((place) => {
-    return place.id === id * 1;
-  });
+  let placesQuery = Place.findById(req.params.id);
 
-  if (!placeFound) {
-    return next(new AppError(`No post found with id ${id}`, 404));
-  }
+  const placeFound = await placesQuery;
 
   res.status(200).json({
     status: "success",
@@ -45,14 +45,34 @@ export const getPlacesByUserId = catchAsync(async (req, res, next) => {
 export const addPlace = catchAsync(async (req, res, next) => {
   const body = req.body;
 
-  if (!body || body === {}) {
-    return next(new AppError(`Invalid data sent`), 404);
-  }
+  await Place.create(body);
 
-  places.push(body);
+  res.status(201).json({
+    status: "success",
+    message: "post added",
+  });
+});
+
+export const updatePlace = catchAsync(async (req, res, next) => {
+  const placeQuery = Place.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  const place = await placeQuery;
 
   res.status(200).json({
     status: "success",
-    message: "post added",
+    message: "post updated",
+  });
+});
+
+export const deletePlace = catchAsync(async (req, res, next) => {
+  const placeQuery = Place.findByIdAndDelete(req.params.id);
+
+  const place = await placeQuery;
+
+  res.status(204).json({
+    status: "success",
   });
 });
