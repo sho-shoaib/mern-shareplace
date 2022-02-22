@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllPlaces,
   getPlaceById,
-  getPlacesByUserId,
+  getPlacesByUser,
   addPlace,
   updatePlace,
   deletePlace,
@@ -12,6 +12,6 @@ const router = express.Router();
 
 router.route("/").get(getAllPlaces).post(addPlace);
 router.route("/:id").get(getPlaceById).patch(updatePlace).delete(deletePlace);
-router.route("/user/:id").get(getPlacesByUserId);
+router.route("/user/by-creator").get(getPlacesByUser);
 
 export default router;

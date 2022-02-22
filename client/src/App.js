@@ -8,6 +8,7 @@ import Profilepage from "./components/pages/Profilepage";
 import Postpage from "./components/pages/Postpage";
 import Userpage from "./components/pages/Userpage";
 import Createpage from "./components/pages/Createpage";
+import AppProvider from "./utils/context";
 
 var xsBreak = null;
 
@@ -17,17 +18,19 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Homepage />} />
-          <Route path='/users' element={<Userspage />} />
-          <Route path='/profile' element={<Profilepage />} />
-          <Route path='/posts/:id' element={<Postpage />} />
-          <Route path='/users/:id' element={<Userpage />} />
-          <Route path='/create' element={<Createpage />} />
-        </Routes>
-      </BrowserRouter>
+      <AppProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Homepage />} />
+            <Route path='/users' element={<Userspage />} />
+            <Route path='/profile' element={<Profilepage />} />
+            <Route path='/posts/:id' element={<Postpage />} />
+            <Route path='/users/:id' element={<Userpage />} />
+            <Route path='/create' element={<Createpage />} />
+          </Routes>
+        </BrowserRouter>
+      </AppProvider>
     </>
   );
 }

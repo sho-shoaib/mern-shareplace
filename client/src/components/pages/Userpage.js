@@ -1,6 +1,6 @@
 import { Container, Typography, Avatar } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { users } from "../../data/data";
 import { posts } from "../../data/data";
@@ -15,12 +15,25 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getPostByUserId, getUserById } from "../../utils/fetch";
 
 const Userpage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const user = users[id];
   const theme = useTheme();
+
+  const [user, setUser] = useState({});
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getUserById(id).then((user) => {
+      setUser(user.user);
+    });
+
+    getPostByUserId(id).then((posts) => {
+      setPosts(posts.places);
+    });
+  }, []);
 
   return (
     <Container maxWidth='md' sx={{ pt: 5, pb: 5 }}>
@@ -112,18 +125,44 @@ const Userpage = () => {
             </Typography>
           </Box>
         </Box>
-        <Box
-          component='img'
-          src={user.image}
-          alt={user.name}
-          sx={{
-            borderRadius: "50%",
-            height: 250,
-            width: 250,
-            objectFit: "cover",
-            marginInline: { xs: "auto", md: "0" },
-          }}
-        />
+        {!user.image && (
+          <Box
+            sx={{
+              bgcolor: red[500],
+              textTransform: "uppercase",
+              height: 200,
+              width: 200,
+              display: "grid",
+              placeItems: "center",
+              borderRadius: "50%",
+              marginInline: { xs: "auto", md: "0" },
+            }}
+            aria-label='recipe'
+          >
+            <Typography
+              sx={{
+                fontSize: 50,
+                color: "white",
+              }}
+            >
+              {user.name && user.name.slice(0, 1)}
+            </Typography>
+          </Box>
+        )}
+        {user.image && (
+          <Box
+            component='img'
+            src={user.image}
+            alt={user.name}
+            sx={{
+              borderRadius: "50%",
+              height: 250,
+              width: 250,
+              objectFit: "cover",
+              marginInline: { xs: "auto", md: "0" },
+            }}
+          />
+        )}
       </Box>
 
       <Box
@@ -144,58 +183,59 @@ const Userpage = () => {
       >
         {posts.map((post) => {
           let newCap = "";
-          if (post.creatorId === user.id) {
-            if (post.caption.length > 300) {
-              newCap = `${post.caption.slice(0, 125)}...`;
-            } else {
-              newCap = post.caption;
-            }
-
-            return (
-              <Card key={post.id} sx={{ maxWidth: "100%", mb: 4 }}>
-                <Box
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => navigate(`/posts/${post.id}`)}
-                >
-                  <CardHeader
-                    avatar={
-                      <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-                        R
-                      </Avatar>
-                    }
-                    title={post.title}
-                    subheader={post.date}
-                  />
-                  <CardMedia
-                    component='img'
-                    height='194'
-                    image={post.image}
-                    alt='Paella dish'
-                  />
-                  <CardContent>
-                    <Typography variant='body2' color='text.secondary'>
-                      {newCap}
-                    </Typography>
-                  </CardContent>
-                </Box>
-                <CardActions disableSpacing>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      ml: 1.5,
-                      transform: "translateY(-5px)",
-                    }}
-                  >
-                    <Typography variant='body1'>{post.likes}</Typography>
-                    <IconButton aria-label='add to favorites'>
-                      <FavoriteIcon />
-                    </IconButton>
-                  </Box>
-                </CardActions>
-              </Card>
-            );
+          if (post.caption.length > 300) {
+            newCap = `${post.caption.slice(0, 125)}...`;
+          } else {
+            newCap = post.caption;
           }
+
+          return (
+            <Card key={post._id} sx={{ maxWidth: "100%", mb: 4 }}>
+              <Box
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate(`/posts/${post._id}`)}
+              >
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      sx={{ bgcolor: red[500], textTransform: "uppercase" }}
+                      aria-label='recipe'
+                    >
+                      {post.creator.slice(0, 1)}
+                    </Avatar>
+                  }
+                  title={post.title}
+                  subheader={post.date}
+                />
+                <CardMedia
+                  component='img'
+                  height='194'
+                  image={post.image}
+                  alt='Paella dish'
+                />
+                <CardContent>
+                  <Typography variant='body2' color='text.secondary'>
+                    {newCap}
+                  </Typography>
+                </CardContent>
+              </Box>
+              <CardActions disableSpacing>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    ml: 1.5,
+                    transform: "translateY(-5px)",
+                  }}
+                >
+                  <Typography variant='body1'>{post.likes}</Typography>
+                  <IconButton aria-label='add to favorites'>
+                    <FavoriteIcon />
+                  </IconButton>
+                </Box>
+              </CardActions>
+            </Card>
+          );
         })}
       </Box>
     </Container>

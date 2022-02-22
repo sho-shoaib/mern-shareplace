@@ -1,15 +1,17 @@
-import { Box } from "@mui/material";
+import { Box, Avatar } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { users } from "../../data/data";
 import { CardActionArea } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../../utils/context";
+import { red } from "@mui/material/colors";
 
 const Userspage = () => {
   const navigate = useNavigate();
+  const { users } = useGlobalContext();
 
   return (
     <Box
@@ -21,17 +23,19 @@ const Userspage = () => {
         p: 8,
       }}
     >
-      {users.map((user, i) => {
+      {users.map((user) => {
         let newDes = "";
-        if (user.description.length > 125) {
-          newDes = `${user.description.slice(0, 125)}...`;
-        } else {
-          newDes = user.description;
+        if (user.description) {
+          if (user.description.length > 125) {
+            newDes = `${user.description.slice(0, 125)}...`;
+          } else {
+            newDes = user.description;
+          }
         }
 
         return (
           <Card
-            key={i}
+            key={user._id}
             sx={{ maxWidth: 345 }}
             elevation={3}
             sx={{
@@ -50,14 +54,35 @@ const Userspage = () => {
           >
             <CardActionArea
               disableRipple
-              onClick={() => navigate(`/users/${user.id}`)}
+              onClick={() => navigate(`/users/${user._id}`)}
             >
-              <CardMedia
-                component='img'
-                height='140'
-                image={user.image}
-                alt='green iguana'
-              />
+              <CardMedia height='140'>
+                {!user.image && (
+                  <Box
+                    sx={{
+                      bgcolor: red[500],
+                      textTransform: "uppercase",
+                      height: "140px",
+                      width: "100%",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                    aria-label='recipe'
+                  >
+                    <Typography sx={{ fontSize: 50, color: "white" }}>
+                      {user.name.slice(0, 1)}
+                    </Typography>
+                  </Box>
+                )}
+                {user.image && (
+                  <Box
+                    component='img'
+                    src={user.image}
+                    alt={user.name}
+                    sx={{ height: "100%", width: "100%", objectFit: "cover" }}
+                  />
+                )}
+              </CardMedia>
               <CardContent>
                 <Typography gutterBottom variant='h5' component='div'>
                   {user.name}
@@ -65,7 +90,7 @@ const Userspage = () => {
                 <Typography
                   variant='body2'
                   color='text.secondary'
-                  sx={{ mb: 0.9 }}
+                  sx={{ mb: 0.9, display: `${!user.description && "none"}` }}
                 >
                   {newDes}
                 </Typography>

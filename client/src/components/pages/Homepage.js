@@ -12,9 +12,7 @@ import CardContent from "@mui/material/CardContent";
 import { Box } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import React, { useState } from "react";
-import { users } from "../../data/data";
-import { posts } from "../../data/data";
+import React, { useEffect, useState } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
@@ -22,11 +20,13 @@ import IconButton from "@mui/material/IconButton";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import { useGlobalContext } from "../../utils/context";
 
 const postsType = ["Recent posts", "Most Liked posts", "My posts"];
 
 const Homepage = () => {
   const [toShow, setToShow] = useState("Recent posts");
+  const { users, posts } = useGlobalContext();
 
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -85,11 +85,23 @@ const Homepage = () => {
               <AvatarGroup max={4} spacing='small' sx={{ ml: 1.5 }}>
                 {users.map((user, i) => {
                   return (
-                    <Avatar
-                      alt={user.name}
-                      src={user.image}
-                      sx={{ width: 56, height: 56 }}
-                    />
+                    <Box>
+                      {!user.image && (
+                        <Avatar
+                          sx={{ bgcolor: red[500], textTransform: "uppercase" }}
+                          aria-label='recipe'
+                        >
+                          {user.name.slice(0, 1)}
+                        </Avatar>
+                      )}
+                      {user.image && (
+                        <Avatar
+                          alt={user.name}
+                          src={user.image}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                      )}
+                    </Box>
                   );
                 })}
               </AvatarGroup>
@@ -180,15 +192,18 @@ const Homepage = () => {
               }
 
               return (
-                <Card key={post.id} sx={{ maxWidth: "100%", mb: 4 }}>
+                <Card key={post._id} sx={{ maxWidth: "100%", mb: 4 }}>
                   <Box
                     sx={{ cursor: "pointer" }}
-                    onClick={() => navigate(`/posts/${post.id}`)}
+                    onClick={() => navigate(`/posts/${post._id}`)}
                   >
                     <CardHeader
                       avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-                          R
+                        <Avatar
+                          sx={{ bgcolor: red[500], textTransform: "uppercase" }}
+                          aria-label='recipe'
+                        >
+                          {post.creator.slice(0, 1)}
                         </Avatar>
                       }
                       title={post.title}

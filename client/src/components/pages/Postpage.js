@@ -3,14 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
-import { posts } from "../../data/data";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getPostById } from "../../utils/fetch";
 
 const PerBlog = () => {
+  const [blog, setBlog] = useState({});
+
   const theme = useTheme();
   const { id } = useParams();
-  const blog = posts[id];
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getPostById(id).then((post) => {
+      setBlog(post.place);
+    });
+  }, []);
 
   return (
     <>

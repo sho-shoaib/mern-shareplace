@@ -27,13 +27,12 @@ export const getPlaceById = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getPlacesByUserId = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const placesFound = places.filter((place) => place.creatorId === id * 1);
+export const getPlacesByUser = catchAsync(async (req, res, next) => {
+  const queryObj = { ...req.query };
 
-  if (!placesFound) {
-    return next(new AppError(`No posts found for user with id ${id}`), 404);
-  }
+  const placesQuery = Place.find(queryObj);
+
+  const placesFound = await placesQuery;
 
   res.status(200).json({
     status: "success",
